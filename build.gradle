@@ -13,8 +13,11 @@ buildscript {
     classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.4'
     classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
     classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.6.2'
+    classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2'
   }
 }
+
+def versionPrefix = '7.1'
 
 // TODO improve
 def buildNumber = System.env.'TRAVIS_BUILD_NUMBER' ?: (/* SonarSource infrastructure: */ System.env.'CI_BUILD_NUMBER' ?: null)
@@ -22,11 +25,19 @@ def versionSuffix = buildNumber == null
   ? '-SNAPSHOT'
   : ('.0.' + buildNumber)
 
+apply plugin: 'org.sonarqube'
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube'
+    property 'sonar.projectVersion', versionPrefix + '-SNAPSHOT'
+  }
+}
+
 allprojects {
   apply plugin: 'com.jfrog.artifactory'
 
   group = 'org.sonarsource.sonarqube'
-  version = '7.1' + versionSuffix
+  version = versionPrefix + versionSuffix
 
   repositories {
     mavenLocal()
@@ -39,6 +50,12 @@ allprojects {
 subprojects {
   ext {
     elasticsearchVersion = '5.6.3'
+  }
+
+  sonarqube {
+    properties {
+      property 'sonar.moduleKey', project.group + ':' + project.name
+    }
   }
 
   apply plugin: 'nebula.provided-base'
