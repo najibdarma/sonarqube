@@ -23,11 +23,15 @@ dependencies {
   compile project(':server:sonar-db-dao')
   compile project(':server:sonar-db-migration')
   compile project(':sonar-scanner-protocol')
-  // TODO exclusions
-  compile project(':sonar-markdown')
+  compile(project(':sonar-markdown')) {
+    // already shaded with sonar-plugin-api
+    exclude group: 'org.codehaus.sonar', module: 'sonar-channel'
+  }
   compile project(':server:sonar-process')
-  // TODO exclusions
-  compile project(path: ':sonar-plugin-api', configuration: 'shadow')
+  compile(project(path: ':sonar-plugin-api', configuration: 'shadow')) {
+    // not used at runtime
+    exclude group: 'com.google.code.findbugs', module: 'jsr305'
+  }
   compile project(':sonar-ws')
   compile project(':server:sonar-plugin-bridge')
   compile 'org.sonarsource.update-center:sonar-update-center-common'
