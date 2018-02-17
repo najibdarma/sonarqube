@@ -13,7 +13,6 @@ dependencies {
   // TODO exclusions
   compile project(':sonar-duplications')
 
-  // TODO not shaded
   // TODO exclusions
   compile 'org.codehaus.woodstox:woodstox-core-lgpl'
   compile 'org.codehaus.woodstox:stax2-api'
