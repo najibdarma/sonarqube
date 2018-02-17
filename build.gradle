@@ -59,6 +59,7 @@ subprojects {
   }
 
   apply plugin: 'nebula.provided-base'
+  apply plugin: 'nebula.optional-base'
 
   // even if it has troubles with dynamic versions ( https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/151 )
   // in contrast to nebula-dependency-recommender it supports not just versions, but also exclusions

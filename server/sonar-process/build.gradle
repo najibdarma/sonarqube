@@ -8,10 +8,8 @@ dependencies {
   compile 'commons-lang:commons-lang'
   compile 'com.google.guava:guava'
   provided 'com.google.code.findbugs:jsr305'
-  // TODO optional
-  compileOnly 'org.nanohttpd:nanohttpd'
-  // TODO optional
-  compileOnly 'com.google.protobuf:protobuf-java'
+  compileOnly 'org.nanohttpd:nanohttpd', optional
+  compileOnly 'com.google.protobuf:protobuf-java', optional
   testCompile 'com.google.protobuf:protobuf-java'
 
   testCompile 'org.assertj:assertj-core'

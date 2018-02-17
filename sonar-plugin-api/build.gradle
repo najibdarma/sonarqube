@@ -21,15 +21,11 @@ dependencies {
   compile 'org.codehaus.staxmate:staxmate'
 
   provided 'com.google.code.findbugs:jsr305'
-  provided 'org.slf4j:slf4j-api'
-  // TODO optional
-  provided 'javax.servlet:javax.servlet-api'
-  // TODO optional
-  provided 'ch.qos.logback:logback-classic'
-  // TODO optional
-  provided 'ch.qos.logback:logback-core'
-  // TODO optional
-  provided 'junit:junit'
+  provided 'org.slf4j:slf4j-api', optional
+  provided 'javax.servlet:javax.servlet-api', optional
+  provided 'ch.qos.logback:logback-classic', optional
+  provided 'ch.qos.logback:logback-core', optional
+  compileOnly 'junit:junit', optional
 
   testCompile 'com.tngtech.java:junit-dataprovider'
   testCompile 'org.assertj:assertj-core'
