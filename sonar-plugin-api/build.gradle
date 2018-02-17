@@ -10,11 +10,13 @@ dependencies {
 
   // shaded, but not relocated
   compile project(':sonar-check-api')
-  // TODO exclusions
-  compile project(':sonar-duplications')
+  compile(project(':sonar-duplications')) {
+    exclude group: 'org.slf4', module: 'slf4j-api'
+  }
 
-  // TODO exclusions
-  compile 'org.codehaus.woodstox:woodstox-core-lgpl'
+  compile('org.codehaus.woodstox:woodstox-core-lgpl') {
+    exclude group: 'stax', module: 'stax-api'
+  }
   compile 'org.codehaus.woodstox:stax2-api'
   compile 'org.codehaus.staxmate:staxmate'
 
