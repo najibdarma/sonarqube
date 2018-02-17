@@ -1,4 +1,3 @@
-apply plugin: 'com.github.johnrengelman.shadow'
 configurations {
   ce {
     transitive = false
@@ -56,13 +55,9 @@ dependencies {
 }
 
 jar {
-  classifier = 'original'
-}
-shadowJar {
   manifest {
     attributes 'Main-Class': 'org.sonar.application.App'
   }
-  classifier = null
 }
 
 task zip(type: Zip) {
@@ -79,7 +74,7 @@ task zip(type: Zip) {
     from "$buildDir/elasticsearch"
   }
   into('sonarqube/lib/') {
-    from shadowJar
+    from jar
   }
   into('sonarqube/lib/jsw/') {
     from configurations.wrapper
