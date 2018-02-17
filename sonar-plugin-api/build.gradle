@@ -49,6 +49,11 @@ shadowJar {
   configurations = [project.configurations.default]
   relocate('com.google', 'org.sonar.api.internal.google')
   relocate('org.apache.commons', 'org.sonar.api.internal.apachecommons')
+  dependencies {
+      exclude(dependency('org.codehaus.woodstox:woodstox-core-lgpl'))
+      exclude(dependency('org.codehaus.woodstox:stax2-api'))
+      exclude(dependency('org.codehaus.staxmate:staxmate'))
+   }
 }
 
 apply plugin: 'maven-publish'

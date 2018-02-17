@@ -14,7 +14,7 @@ dependencies {
   compile project(':sonar-scanner-protocol')
   compile project(':sonar-ws')
   compile project(':sonar-home')
-  compile project(path: ':sonar-plugin-api', configuration: 'shadow')
+  compile project(path: ':sonar-plugin-api')
   compile 'org.slf4j:slf4j-api'
   compile 'org.slf4j:jcl-over-slf4j'
   compile 'org.slf4j:log4j-over-slf4j'
