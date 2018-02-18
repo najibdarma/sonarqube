@@ -87,7 +87,14 @@ task zip(type: Zip) {
     from configurations.compile
   }
   into('sonarqube/lib/server/') {
-    from configurations.server
+    // TODO review dependencies
+    from configurations.server - configurations.compile {
+      exclude 'javax.servlet-api-*.jar'
+      exclude 'sonar-check-api-*.jar'
+      exclude 'sonar-channel-*.jar'
+      exclude 'sonar-duplications-*.jar'
+      exclude 'sonar-plugin-api-7.1-SNAPSHOT.jar'
+    }
   }
   into('sonarqube/lib/ce/') {
     from configurations.ce
