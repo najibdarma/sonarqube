@@ -10,20 +10,16 @@ sourceSets {
 dependencies {
   // TOREVIEW
   compile 'org.slf4j:slf4j-api'
-  compile 'org.slf4j:jcl-over-slf4j'
   compile 'org.slf4j:jul-to-slf4j'
   compile 'org.apache.logging.log4j:log4j-api'
-  compile 'org.apache.logging.log4j:log4j-core'
   compile 'ch.qos.logback:logback-access'
   compile 'ch.qos.logback:logback-classic'
   compile 'ch.qos.logback:logback-core'
 
   compile 'org.apache.tomcat.embed:tomcat-embed-core'
   compile 'com.google.code.gson:gson'
-  // TODO
+  // not a transitive dep. At runtime lib/jdbc/h2 is used
   compileOnly 'com.h2database:h2'
-  testCompile 'com.h2database:h2'
-  
   compile project(':sonar-core')
   compile project(':server:sonar-db-dao')
   compile project(':server:sonar-db-migration')
@@ -32,12 +28,8 @@ dependencies {
     // already shaded with sonar-plugin-api
     exclude group: 'org.codehaus.sonar', module: 'sonar-channel'
   }
-  // TODO
-  //compile project(':server:sonar-process')
-  compile(project(path: ':sonar-plugin-api', configuration: 'shadow')) {
-    // not used at runtime
-    exclude group: 'com.google.code.findbugs', module: 'jsr305'
-  }
+  compile project(':server:sonar-process')
+  compile project(path: ':sonar-plugin-api', configuration: 'shadow')
   compile project(':sonar-ws')
   compile project(':server:sonar-plugin-bridge')
   compile 'org.sonarsource.update-center:sonar-update-center-common'
@@ -52,18 +44,13 @@ dependencies {
   // TODO
   //compile 'commons-codec:commons-codec'
   compile 'commons-dbcp:commons-dbcp'
-  // TODO
-  //compile 'org.apache.httpcomponents:httpclient:4.5.2'
-  // TODO
-  compileOnly 'org.elasticsearch.client:transport'
-  testCompile 'org.elasticsearch.client:transport'
-
-  //TODO
-  //compile 'com.hazelcast:hazelcast-client'
+  compile 'org.apache.httpcomponents:httpclient'
+  compile 'org.elasticsearch.client:transport'
+  compile 'com.hazelcast:hazelcast-client'
   compile 'com.google.protobuf:protobuf-java'
   compile 'javax.xml.bind:jaxb-api'
-  provided 'com.google.code.findbugs:jsr305'
   compile 'io.jsonwebtoken:jjwt'
+  compileOnly 'com.google.code.findbugs:jsr305'
 
   testCompile 'junit:junit'
   testCompile 'org.assertj:assertj-core'
@@ -83,6 +70,10 @@ dependencies {
     exclude group: 'com.carrotsearch.randomizedtesting', module: 'randomizedtesting-runner'
     exclude group: 'org.elasticsearch', module: 'securemock'
   }
+  testCompile 'com.google.code.findbugs:jsr305'
+  testCompile 'com.h2database:h2'
+  testCompile 'org.apache.logging.log4j:log4j-api'
+  testCompile  'org.apache.logging.log4j:log4j-core'
 }
 
 // FIXME

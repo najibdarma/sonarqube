@@ -2,7 +2,7 @@ dependencies {
   compile 'net.jpountz.lz4:lz4'
   compile 'com.google.protobuf:protobuf-java'
   compile 'com.google.code.gson:gson'
-  provided 'com.google.code.findbugs:jsr305'
+  compileOnly 'com.google.code.findbugs:jsr305'
   compile 'commons-io:commons-io'
   compile project(':sonar-core')
 

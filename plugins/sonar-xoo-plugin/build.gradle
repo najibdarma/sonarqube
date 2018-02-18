@@ -1,11 +1,15 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
+configurations {
+  testCompile.extendsFrom(compileOnly)
+}
+
 dependencies {
   compile 'com.google.guava:guava'
   compile 'commons-io:commons-io'
   compile 'commons-lang:commons-lang'
-  provided 'com.google.code.findbugs:jsr305'
-  provided project(':sonar-plugin-api')
+  compileOnly 'com.google.code.findbugs:jsr305'
+  compileOnly project(path: ':sonar-plugin-api', configuration: 'shadow')
 
   testCompile 'junit:junit'
   testCompile 'org.assertj:assertj-core'

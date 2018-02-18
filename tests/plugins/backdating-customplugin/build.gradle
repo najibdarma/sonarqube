@@ -5,9 +5,9 @@ dependencies {
   compile 'commons-io:commons-io'
   compile 'commons-lang:commons-lang'
 
-  provided 'com.google.code.findbugs:jsr305'
-  provided project(':sonar-plugin-api')
-  provided project(path: ':tests:plugins:backdating-plugin-v1', configuration: 'shadow')
+  compileOnly 'com.google.code.findbugs:jsr305'
+  compileOnly project(':sonar-plugin-api')
+  compileOnly project(path: ':tests:plugins:backdating-plugin-v1', configuration: 'shadow')
 }
 
 jar.enabled = false

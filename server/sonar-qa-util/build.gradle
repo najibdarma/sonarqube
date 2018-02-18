@@ -5,7 +5,7 @@ dependencies {
   compile 'com.google.guava:guava:23.0'
   compile 'org.assertj:assertj-core'
   compile 'org.sonarsource.orchestrator:sonar-orchestrator'
-  provided 'com.google.code.findbugs:jsr305'
+  compileOnly 'com.google.code.findbugs:jsr305'
 }
 
 // Required for core plugins

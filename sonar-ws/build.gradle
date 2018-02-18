@@ -1,10 +1,14 @@
+configurations {
+  testCompile.extendsFrom(compileOnly)
+}
+
 dependencies {
   compile 'com.google.protobuf:protobuf-java'
   compile 'com.google.guava:guava'
   compile 'com.squareup.okhttp3:okhttp'
-  provided 'com.google.code.findbugs:jsr305'
   compile 'commons-io:commons-io'
-  provided project(path: ':sonar-plugin-api', configuration: 'shadow'), optional
+  compileOnly 'com.google.code.findbugs:jsr305'
+  compileOnly project(path: ':sonar-plugin-api', configuration: 'shadow')
 
   testCompile 'junit:junit'
   testCompile 'org.assertj:assertj-core'

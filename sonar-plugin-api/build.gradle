@@ -1,7 +1,6 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-  // relocated
   compile 'com.google.code.gson:gson'
   compile 'com.google.guava:guava'
   compile 'commons-codec:commons-codec'
@@ -14,23 +13,33 @@ dependencies {
     exclude group: 'org.slf4', module: 'slf4j-api'
   }
 
-  compile('org.codehaus.woodstox:woodstox-core-lgpl') {
-    exclude group: 'stax', module: 'stax-api'
-  }
-  compile 'org.codehaus.woodstox:stax2-api'
-  compile 'org.codehaus.staxmate:staxmate'
+  // TODO not shaded
+  // TODO exclusions
+  shadow 'org.codehaus.woodstox:woodstox-core-lgpl'
+  shadow 'org.codehaus.woodstox:stax2-api'
+  shadow 'org.codehaus.staxmate:staxmate'
 
-  provided 'com.google.code.findbugs:jsr305'
-  provided 'org.slf4j:slf4j-api', optional
-  provided 'javax.servlet:javax.servlet-api', optional
-  provided 'ch.qos.logback:logback-classic', optional
-  provided 'ch.qos.logback:logback-core', optional
-  compileOnly 'junit:junit', optional
+  compileOnly 'com.google.code.findbugs:jsr305'
+  compileOnly 'org.slf4j:slf4j-api'
+  // TODO optional
+  compileOnly 'javax.servlet:javax.servlet-api'
+  // TODO optional
+  compileOnly 'ch.qos.logback:logback-classic'
+  // TODO optional
+  compileOnly 'ch.qos.logback:logback-core'
+  // TODO optional
+  compileOnly 'junit:junit'
 
   testCompile 'com.tngtech.java:junit-dataprovider'
   testCompile 'org.assertj:assertj-core'
   testCompile 'org.mockito:mockito-core'
   testCompile project(':sonar-testing-harness')
+}
+
+sourceSets {
+  // Make the compileOnly dependencies available when compiling/running tests
+  test.compileClasspath += configurations.compileOnly + configurations.shadow
+  test.runtimeClasspath += configurations.compileOnly + configurations.shadow
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

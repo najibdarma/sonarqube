@@ -4,8 +4,8 @@ dependencies {
   compile 'junit:junit'
   compile 'org.hamcrest:hamcrest-core'
   compile 'commons-io:commons-io'
-  provided 'com.google.code.findbugs:jsr305'
-  
+  compileOnly 'com.google.code.findbugs:jsr305'
+
   testCompile 'org.assertj:assertj-core'
 }
 

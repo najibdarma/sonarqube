@@ -7,15 +7,18 @@ dependencies {
   compile 'commons-io:commons-io'
   compile 'commons-lang:commons-lang'
   compile 'com.google.guava:guava'
-  provided 'com.google.code.findbugs:jsr305'
-  compileOnly 'org.nanohttpd:nanohttpd', optional
-  compileOnly 'com.google.protobuf:protobuf-java', optional
+  compileOnly 'com.google.code.findbugs:jsr305'
+  // TODO optional
+  compileOnly 'org.nanohttpd:nanohttpd'
+  // TODO optional
+  compileOnly 'com.google.protobuf:protobuf-java'
   testCompile 'com.google.protobuf:protobuf-java'
 
   testCompile 'org.assertj:assertj-core'
   testCompile 'com.tngtech.java:junit-dataprovider'
   testCompile project(':sonar-testing-harness')
   testCompile 'org.mockito:mockito-core'
+  testCompile 'com.google.code.findbugs:jsr305'
   // Workaround to resolve dependencies of eclipse specific packaging: https://issues.gradle.org/browse/GRADLE-2076
   testCompile module('org.eclipse.jetty:jetty-server') {
     dependencies(

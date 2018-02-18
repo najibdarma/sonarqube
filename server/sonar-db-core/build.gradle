@@ -1,5 +1,5 @@
 dependencies {
-  provided 'com.google.code.findbugs:jsr305'
+  compileOnly 'com.google.code.findbugs:jsr305'
 
   compile 'commons-codec:commons-codec'
   compile 'org.apache.commons:commons-csv'
@@ -21,10 +21,10 @@ dependencies {
   testCompile 'org.mockito:mockito-core'
   testCompile 'org.dbunit:dbunit'
   testCompile project(':sonar-testing-harness')
-
   testCompile 'mysql:mysql-connector-java'
   testCompile 'org.postgresql:postgresql'
   testCompile 'com.h2database:h2'
+  testCompile 'com.google.code.findbugs:jsr305'
 
   if (System.getProperty('orchestrator.configUrl')) {
     compile 'com.microsoft.sqlserver:mssql-jdbc'
