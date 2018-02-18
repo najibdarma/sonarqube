@@ -13,6 +13,7 @@ configurations {
   plugin {
     transitive = false
   }
+  server
   wrapper
 }
 
@@ -23,7 +24,7 @@ dependencies {
   compile 'org.elasticsearch.client:transport'
   // TODO all below are provided
 //  compile 'com.google.code.findbugs:jsr305'
-  compileOnly project(':server:sonar-server') // needed for compilation, others for packaging
+  server project(':server:sonar-server') // needed for packaging
   ce 'org.nanohttpd:nanohttpd' // TODO not in pom
   ce project(':server:sonar-ce')
 
@@ -86,7 +87,7 @@ task zip(type: Zip) {
     from configurations.compile
   }
   into('sonarqube/lib/server/') {
-    from configurations.compileOnly - configurations.compile
+    from configurations.server
   }
   into('sonarqube/lib/ce/') {
     from configurations.ce

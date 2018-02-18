@@ -1,5 +1,6 @@
 dependencies {
   provided project(':server:sonar-server')
+
   compile 'org.nanohttpd:nanohttpd'
   compile 'com.google.protobuf:protobuf-java'
   provided 'com.google.code.findbugs:jsr305'
@@ -10,6 +11,10 @@ dependencies {
   testCompile 'org.assertj:assertj-guava'
   testCompile 'org.mockito:mockito-core'
   testCompile project(':server:sonar-db-testing')
+  // TODO
+  testRuntime 'com.h2database:h2'
+  // TODO
+  testRuntime 'org.elasticsearch.client:transport'
 }
 
 artifactoryPublish.skip = true
