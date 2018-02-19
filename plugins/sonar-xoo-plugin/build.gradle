@@ -16,13 +16,8 @@ dependencies {
   testCompile 'org.mockito:mockito-core'
 }
 
-jar {
-  classifier = 'original'
-}
+jar.enabled = false
 shadowJar {
-  configurations = [project.configurations.default]
-  // location and name is important for integration tests
-  destinationDir = file('target')
   classifier = null
   manifest {
     attributes(
@@ -35,6 +30,10 @@ shadowJar {
       'Plugin-Name': 'Xoo'
     )
   }
+}
+
+artifacts {
+  archives shadowJar
 }
 
 apply plugin: 'maven-publish'
