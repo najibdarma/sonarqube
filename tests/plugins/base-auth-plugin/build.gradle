@@ -1,15 +1,14 @@
 dependencies {
-  compileOnly project(':sonar-plugin-api')
-  compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
   compile('com.google.guava:guava:17.0') {
     exclude group: 'com.google.code.findbugs', module: 'jsr305'
   }
+  compileOnly project(path: ':sonar-plugin-api', configuration: 'shadow')
+  compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
 jar {
   manifest {
     attributes(
-      'Plugin-Dependencies': configurations.compile.files.collect { "META-INF/lib/$it.name" }.join(' '),
       'Plugin-Key': 'baseauthplugin',
       'Plugin-Version': version,
       'Plugin-Class': 'FakeBaseAuthPlugin',

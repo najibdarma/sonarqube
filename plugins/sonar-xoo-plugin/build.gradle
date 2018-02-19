@@ -17,7 +17,6 @@ dependencies {
 jar {
   manifest {
     attributes(
-      'Plugin-Dependencies': configurations.compile.files.collect { "META-INF/lib/$it.name" }.join(' '),
       'Plugin-Key': 'xoo',
       'Plugin-Version': project.version,
       'Plugin-Class': 'org.sonar.xoo.XooPlugin',
@@ -28,8 +27,8 @@ jar {
     )
   }
   into('META-INF/lib') {
-      from configurations.compile
-    }
+    from configurations.compile
+  }
 }
 
 apply plugin: 'maven-publish'

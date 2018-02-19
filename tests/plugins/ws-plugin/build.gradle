@@ -1,6 +1,6 @@
 dependencies {
-  compileOnly project(':sonar-plugin-api')
-  compileOnly project(':sonar-ws')
+  compile project(':sonar-ws')
+  compileOnly project(path: ':sonar-plugin-api', configuration: 'shadow')
 }
 
 jar {
@@ -15,5 +15,8 @@ jar {
       'Plugin-Name': 'SonarQube Integration Tests :: Plugins :: Ws',
       'Plugin-License': 'GNU LGPL 3'
     )
+  }
+  into('META-INF/lib') {
+    from configurations.compile
   }
 }

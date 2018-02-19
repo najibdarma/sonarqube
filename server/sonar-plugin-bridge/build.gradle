@@ -1,5 +1,5 @@
 dependencies {
-  compile project(':sonar-plugin-api')
+  compile project(path: ':sonar-plugin-api', configuration: 'shadow')
   compile project(':sonar-core')
   compileOnly 'com.google.code.findbugs:jsr305'
 }
