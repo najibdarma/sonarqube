@@ -3,6 +3,9 @@ ext {
   bytemanVersion = '3.0.10'
 }
 
+configurations {
+  sqZip
+}
 
 sourceSets {
   integrationTest {
@@ -44,35 +47,8 @@ def pluginsForITs = [
     ':tests:plugins:backdating-customplugin'
 ]
 
-task integrationTest(type: Test) {
-  description = 'Runs integration tests'
-
-  for (plugin in pluginsForITs) {
-    dependsOn project(plugin).assemble
-  }
-  dependsOn project(':sonar-application').assemble
-
-  testClassesDirs = sourceSets.integrationTest.output.classesDirs
-  classpath = sourceSets.integrationTest.runtimeClasspath
-
-  if (System.getProperty('orchestrator.configUrl')) {
-    systemProperty 'orchestrator.configUrl', System.getProperty('orchestrator.configUrl')
-  }
-  systemProperty 'sonar.zipPath', project(':sonar-application').zip.archivePath
-
-  def category = System.getProperty('category')
-  filter {
-    switch (category) {
-      case 'Category1':
-        includeTestsMatching '**.Category1Suite'
-        includeTestsMatching '**.authorization.*Suite'
-        includeTestsMatching '**.measure.*Suite'
-        break
-    }
-  }
-}
-
 dependencies {
+  sqZip "org.sonarsource.sonarqube:sonar-application:${version}@zip"
   integrationTestCompile 'org.sonarsource.orchestrator:sonar-orchestrator'
   integrationTestCompile project(':server:sonar-qa-util')
   integrationTestCompile project(':server:sonar-process')
@@ -97,6 +73,38 @@ dependencies {
   //includeInTestResources "org.jboss.byteman:byteman:${bytemanVersion}"
 }
 
+task integrationTest(type: Test) {
+  description = 'Runs integration tests'
+
+  for (plugin in pluginsForITs) {
+    dependsOn project(plugin).assemble
+  }
+
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+
+  if (System.getProperty('orchestrator.configUrl')) {
+    systemProperty 'orchestrator.configUrl', System.getProperty('orchestrator.configUrl')
+  }
+
+  if (System.getProperty('cix')=='true') {
+    systemProperty 'sonar.zipPath', configurations.sqZip.resolve().first()
+  } else {
+    systemProperty 'sonar.zipPath', project(':sonar-application').zip.archivePath
+  }
+
+  def category = System.getProperty('category')
+  filter {
+    switch (category) {
+      case 'Category1':
+        includeTestsMatching '**.Category1Suite'
+        includeTestsMatching '**.authorization.*Suite'
+        includeTestsMatching '**.measure.*Suite'
+        break
+    }
+  }
+}
+
 //processTestResources {
 //  into('/') {
 //    from configurations.includeInTestResources
@@ -104,5 +112,3 @@ dependencies {
 //    rename '(.*)-' + bytemanVersion + '.jar', '$1.jar'
 //  }
 //}
-
-artifactoryPublish.skip = true
