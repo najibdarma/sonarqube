@@ -51,7 +51,6 @@ dependencies {
   sqZip "org.sonarsource.sonarqube:sonar-application:${version}@zip"
   integrationTestCompile 'org.sonarsource.orchestrator:sonar-orchestrator'
   integrationTestCompile project(':server:sonar-qa-util')
-  integrationTestCompile project(':server:sonar-process')
   integrationTestCompile project(':sonar-ws')
   // required version 23.0 for selenide
   integrationTestCompile 'com.google.guava:guava:23.0'
@@ -100,6 +99,7 @@ task integrationTest(type: Test) {
         includeTestsMatching '**.Category1Suite'
         includeTestsMatching '**.authorization.*Suite'
         includeTestsMatching '**.measure.*Suite'
+        includeTestsMatching '**.qualityGate.*Suite'
         break
     }
   }
