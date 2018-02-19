@@ -1,5 +1,3 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
 configurations {
   testCompile.extendsFrom(compileOnly)
 }
@@ -16,11 +14,10 @@ dependencies {
   testCompile 'org.mockito:mockito-core'
 }
 
-jar.enabled = false
-shadowJar {
-  classifier = null
+jar {
   manifest {
     attributes(
+      'Plugin-Dependencies': configurations.compile.files.collect { "META-INF/lib/$it.name" }.join(' '),
       'Plugin-Key': 'xoo',
       'Plugin-Version': project.version,
       'Plugin-Class': 'org.sonar.xoo.XooPlugin',
@@ -30,17 +27,16 @@ shadowJar {
       'Plugin-Name': 'Xoo'
     )
   }
-}
-
-artifacts {
-  archives shadowJar
+  into('META-INF/lib') {
+      from configurations.compile
+    }
 }
 
 apply plugin: 'maven-publish'
 publishing {
   publications {
     mavenJava(MavenPublication) {
-      artifact source: shadowJar, classifier: null
+      from components.java
     }
   }
 }
