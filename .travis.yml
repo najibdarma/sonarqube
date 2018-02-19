@@ -22,11 +22,12 @@ cache:
     - $HOME/maven
     - tests/target/surefire-reports
     - tests/target/1/sonarqube/logs
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 before_cache:
-  # remove all the artifacts (JAR, ZIP) that are installed in local repo because of mvn deploy
-  - rm -rf $HOME/.m2/repository/org/sonarsource/sonarqube
-  - find $HOME/.m2 -name resolver-status.properties -exec rm {} \;
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 notifications:
   email: false
