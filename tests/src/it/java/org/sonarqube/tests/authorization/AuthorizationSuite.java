@@ -17,42 +17,38 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarqube.tests.measure;
+package org.sonarqube.tests.authorization;
 
 import com.sonar.orchestrator.Orchestrator;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import static util.ItUtils.newOrchestratorBuilder;
 import static util.ItUtils.pluginArtifact;
 import static util.ItUtils.xooPlugin;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  ComplexityMeasuresTest.class,
-  CustomMeasuresTest.class,
-  DecimalScaleMetricTest.class,
-  DifferentialPeriodsTest.class,
-  MeasuresWsTest.class,
-  ProjectActivityPageTest.class,
-  ProjectDashboardTest.class,
-  ProjectMeasuresPageTest.class,
-  SincePreviousVersionHistoryTest.class,
-  SinceXDaysHistoryTest.class,
-  TimeMachineTest.class
+  ExecuteAnalysisPermissionTest.class,
+  IssuePermissionTest.class,
+  PermissionSearchTest.class,
+  PermissionTemplatePageTest.class,
+
+  ProvisioningPermissionTest.class,
+  QualityProfileAdminPermissionTest.class,
+  SystemPasscodeTest.class
 })
-public class MeasureSuite {
+public class AuthorizationSuite {
 
   @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
-    // reduce memory for Elasticsearch
-    .setServerProperty("sonar.search.javaOpts", "-Xms128m -Xmx128m")
+  public static final Orchestrator ORCHESTRATOR = newOrchestratorBuilder()
+    // for SystemPasscodeTest
+    // this privileged plugin provides the WS api/system_passcode/check
+    // that is used by the tests
+    .addPlugin(pluginArtifact("fake-governance-plugin"))
+    .setServerProperty("sonar.web.systemPasscode", SystemPasscodeTest.VALID_PASSCODE)
 
     .addPlugin(xooPlugin())
-
-    // used by DecimalScaleMetricTest
-    .addPlugin(pluginArtifact("batch-plugin"))
-
     .build();
-
 }

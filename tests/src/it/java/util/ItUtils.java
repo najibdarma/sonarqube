@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.build.BuildResult;
 import com.sonar.orchestrator.build.SonarRunner;
 import com.sonar.orchestrator.container.Server;
@@ -96,8 +97,23 @@ public class ItUtils {
   private ItUtils() {
   }
 
+  public static OrchestratorBuilder newOrchestratorBuilder() {
+    String zipPath = System.getProperty("sonar.zipPath");
+    File zip;
+    if (zipPath == null) {
+      zip = FileLocation.byWildcardMavenFilename(new File("../sonar-application/build/distributions"), "sonar-application-*.zip").getFile();
+    } else {
+      zip = new File(zipPath);
+    }
+    return Orchestrator.builderEnv()
+      // reduce memory for Elasticsearch
+      .setServerProperty("sonar.search.javaOpts", "-Xms128m -Xmx128m")
+      .setOrchestratorProperty("orchestrator.workspaceDir", "build/it")
+      .setZipFile(zip);
+  }
+
   public static FileLocation xooPlugin() {
-    return FileLocation.byWildcardMavenFilename(new File("../plugins/sonar-xoo-plugin/target"), "sonar-xoo-plugin-*.jar");
+    return FileLocation.byWildcardMavenFilename(new File("../plugins/sonar-xoo-plugin/build/libs"), "sonar-xoo-plugin-*.jar");
   }
 
   public static List<Issue> getAllServerIssues(Orchestrator orchestrator) {
