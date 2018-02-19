@@ -56,7 +56,7 @@ dependencies {
 jar {
   manifest {
     attributes(
-      'Class-Path': configurations.compile.collect { "server/${it.getName()}" }.join(' '),
+      'Class-Path': configurations.compile.collect { "common/${it.getName()}" }.join(' '),
       'Main-Class': 'org.sonar.application.App'
     )
   }
