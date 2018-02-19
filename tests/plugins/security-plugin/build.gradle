@@ -1,13 +1,11 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
 dependencies {
-  provided project(':sonar-plugin-api')
+  compileOnly project(':sonar-plugin-api')
+  testCompile 'junit:junit'
+  testCompile project(':sonar-plugin-api')
   testCompile 'org.assertj:assertj-core'
 }
 
-jar.enabled = false
-shadowJar {
-  classifier = null
+jar {
   manifest {
     attributes(
       'Plugin-Key': 'security-plugin',
@@ -20,8 +18,4 @@ shadowJar {
       'Plugin-License': 'GNU LGPL 3'
     )
   }
-}
-
-artifacts {
-  archives shadowJar
 }

@@ -1,5 +1,3 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
 dependencies {
   compile 'com.google.guava:guava'
   compile 'commons-io:commons-io'
@@ -7,14 +5,13 @@ dependencies {
 
   compileOnly 'com.google.code.findbugs:jsr305'
   compileOnly project(':sonar-plugin-api')
-  compileOnly project(path: ':tests:plugins:backdating-plugin-v1', configuration: 'shadow')
+  compileOnly project(':tests:plugins:backdating-plugin-v1')
 }
 
-jar.enabled = false
-shadowJar {
-  classifier = null
+jar {
   manifest {
     attributes(
+      'Plugin-Dependencies': configurations.compile.files.collect { "META-INF/lib/$it.name" }.join(' '),
       'Plugin-Key': 'custombackdating',
       'Plugin-Version': version,
       'Plugin-Class': 'org.sonar.backdating.custom.BackdatingPlugin',
@@ -26,8 +23,7 @@ shadowJar {
       'Plugin-Base': 'backdating'
     )
   }
-}
-
-artifacts {
-  archives shadowJar
+  into('META-INF/lib') {
+    from configurations.compile
+  }
 }

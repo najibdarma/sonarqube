@@ -1,18 +1,15 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
 dependencies {
-  provided project(':sonar-plugin-api')
-  provided 'javax.servlet:javax.servlet-api:3.0.1'
+  compileOnly project(':sonar-plugin-api')
+  compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
   compile('com.google.guava:guava:17.0') {
     exclude group: 'com.google.code.findbugs', module: 'jsr305'
   }
 }
 
-jar.enabled = false
-shadowJar {
-  classifier = null
+jar {
   manifest {
     attributes(
+      'Plugin-Dependencies': configurations.compile.files.collect { "META-INF/lib/$it.name" }.join(' '),
       'Plugin-Key': 'baseauthplugin',
       'Plugin-Version': version,
       'Plugin-Class': 'FakeBaseAuthPlugin',
@@ -23,8 +20,7 @@ shadowJar {
       'Plugin-License': 'GNU LGPL 3'
     )
   }
-}
-
-artifacts {
-  archives shadowJar
+  into('META-INF/lib') {
+    from configurations.compile
+  }
 }

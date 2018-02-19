@@ -1,12 +1,8 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
 dependencies {
-  provided project(':sonar-plugin-api')
+  compileOnly project(':sonar-plugin-api')
 }
 
-jar.enabled = false
-shadowJar {
-  classifier = null
+jar {
   manifest {
     attributes(
       'Plugin-Key': 'sonar-subcategories-plugin',
@@ -19,8 +15,4 @@ shadowJar {
       'Plugin-License': 'GNU LGPL 3'
     )
   }
-}
-
-artifacts {
-  archives shadowJar
 }
