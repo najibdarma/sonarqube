@@ -244,7 +244,7 @@ BUILD)
     ./gradlew -Prelease=true build publishToMavenLocal artifactoryPublish --no-daemon
   fi
 
-  ./gradlew liteTest --no-daemon -i --console plain
+  ./gradlew :tests:integrationTest -Dcategory=Lite --no-daemon -i --console plain
   ;;
 
 WEB_TESTS)
