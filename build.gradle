@@ -220,6 +220,7 @@ subprojects {
   idea {
     module {
       sourceDirs += file("${protobuf.generatedFilesBaseDir}/main/java")
+      testSourceDirs += file("${protobuf.generatedFilesBaseDir}/test/java")
     }
   }
 }
