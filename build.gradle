@@ -7,8 +7,6 @@ buildscript {
   dependencies {
     classpath 'io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE'
     // TODO Since 3.2.0 the provided configuration is incompatible with Gradle 3.4 and later and fail the builds
-    //classpath "com.netflix.nebula:gradle-extra-configurations-plugin:3.3.0"
-    classpath "com.netflix.nebula:gradle-extra-configurations-plugin:3.1.0"
     classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
     classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.4'
     classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
@@ -17,27 +15,21 @@ buildscript {
   }
 }
 
-def versionPrefix = '7.1'
-
-// TODO improve
-def buildNumber = System.env.'TRAVIS_BUILD_NUMBER' ?: (/* SonarSource infrastructure: */ System.env.'CI_BUILD_NUMBER' ?: null)
-def versionSuffix = buildNumber == null
-  ? '-SNAPSHOT'
-  : ('.0.' + buildNumber)
-
 apply plugin: 'org.sonarqube'
 sonarqube {
   properties {
     property 'sonar.projectName', 'SonarQube'
-    property 'sonar.projectVersion', versionPrefix + '-SNAPSHOT'
+    property 'sonar.projectVersion', version
   }
 }
 
 allprojects {
   apply plugin: 'com.jfrog.artifactory'
 
-  group = 'org.sonarsource.sonarqube'
-  version = versionPrefix + versionSuffix
+  def buildNumber = System.getProperty("buildNumber")
+  if (version.endsWith('-SNAPSHOT') && buildNumber != null) {
+    version = version.replace('-SNAPSHOT', ".0.$buildNumber")
+  }
 
   repositories {
     mavenLocal()
@@ -48,6 +40,9 @@ allprojects {
 }
 
 subprojects {
+  // do not deploy by default
+  artifactoryPublish.skip = true
+
   ext {
     elasticsearchVersion = '5.6.3'
   }
@@ -57,9 +52,6 @@ subprojects {
       property 'sonar.moduleKey', project.group + ':' + project.name
     }
   }
-
-  apply plugin: 'nebula.provided-base'
-  apply plugin: 'nebula.optional-base'
 
   // even if it has troubles with dynamic versions ( https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/151 )
   // in contrast to nebula-dependency-recommender it supports not just versions, but also exclusions

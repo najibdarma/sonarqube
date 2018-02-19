@@ -28,7 +28,6 @@ include 'sonar-ws'
 include 'plugins:sonar-xoo-plugin'
 include 'server:sonar-qa-util'
 
-//tests
 include 'tests:plugins:access-secured-props-plugin'
 include 'tests:plugins:base-auth-plugin'
 include 'tests:plugins:batch-plugin'
