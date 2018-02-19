@@ -1,5 +1,33 @@
+// SonarSource branding
+// enable loading of credentials from Maven settings.xml:
+plugins {
+  id "net.linguica.maven-settings" version "0.5"
+}
+
 apply plugin: 'com.moowork.node'
 apply plugin: 'war'
+
+// SonarSource branding
+repositories.maven {
+  name 'sonarsource'
+  url 'https://repox.sonarsource.com/sonarsource'
+  authentication {
+    basic(BasicAuthentication)
+  }
+}
+configurations {
+  branding
+}
+dependencies {
+  branding 'com.sonarsource:sonarsource-branding:1.3.0.307@war'
+}
+task unzipBranding(type: Copy) {
+  into projectDir
+  from { zipTree(configurations.branding.singleFile) }
+  include '**/*.js'
+  include '**/*.svg'
+  includeEmptyDirs = false
+}
 
 node {
   version = '8.5.0'
@@ -7,7 +35,9 @@ node {
   download = true
 }
 
+ext.release = project.hasProperty('release') ? project.getProperty('release') : false
 yarn_run {
+  if (release) { dependsOn unzipBranding }
   inputs.dir('scripts')
   inputs.dir('src/main/js')
   inputs.file('build.gradle')
