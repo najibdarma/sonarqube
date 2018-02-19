@@ -33,6 +33,7 @@ import org.sonarqube.tests.performance.AbstractPerfTest;
 import org.sonarqube.tests.performance.ServerLogs;
 
 import static org.apache.commons.io.FileUtils.readLines;
+import static util.ItUtils.newOrchestratorBuilder;
 
 public class ServerPerfTest extends AbstractPerfTest {
   private static final int TIMEOUT_3_MINUTES = 1000 * 60 * 3;
@@ -44,7 +45,7 @@ public class ServerPerfTest extends AbstractPerfTest {
   @Test
   public void server_startup_and_shutdown() throws Exception {
     String defaultWebJavaOptions = "-Xmx768m -XX:+HeapDumpOnOutOfMemoryError -Djava.awt.headless=true -Dfile.encoding=UTF-8";
-    Orchestrator orchestrator = Orchestrator.builderEnv()
+    Orchestrator orchestrator = newOrchestratorBuilder()
       .addPlugin(FileLocation.byWildcardMavenFilename(new File("../plugins/sonar-xoo-plugin/target"), "sonar-xoo-plugin-*.jar"))
 
       // See http://wiki.apache.org/tomcat/HowTo/FasterStartUp

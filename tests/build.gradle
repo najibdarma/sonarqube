@@ -100,6 +100,28 @@ task integrationTest(type: Test) {
         includeTestsMatching '**.authorization.*Suite'
         includeTestsMatching '**.measure.*Suite'
         includeTestsMatching '**.qualityGate.*Suite'
+        includeTestsMatching '**.source.*Suite'
+        break
+      case 'Category2':
+        includeTestsMatching '**.issue.*Suite'
+        includeTestsMatching '**.test.*Suite'
+        includeTestsMatching '**.qualityModel.*Suite'
+        break
+      case 'Category3':
+        includeTestsMatching '**.Category3Suite'
+        includeTestsMatching '**.component.*Suite'
+        includeTestsMatching '**.project.*Suite'
+        break
+      case 'Category4':
+        includeTestsMatching '**.Category4Suite'
+        includeTestsMatching '**.duplication.*Suite'
+        break
+      case 'Category5':
+        includeTestsMatching '**.Category5Suite'
+        break
+      case 'Category6':
+        includeTestsMatching '**.Category6Suite'
+        includeTestsMatching '**.organization.*Suite'
         break
     }
   }

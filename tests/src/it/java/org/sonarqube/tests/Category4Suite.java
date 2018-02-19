@@ -46,6 +46,7 @@ import org.sonarqube.tests.user.RootUserInStandaloneModeTest;
 import org.sonarqube.tests.ws.WsLocalCallTest;
 import org.sonarqube.tests.ws.WsTest;
 
+import static util.ItUtils.newOrchestratorBuilder;
 import static util.ItUtils.pluginArtifact;
 import static util.ItUtils.xooPlugin;
 
@@ -92,7 +93,7 @@ import static util.ItUtils.xooPlugin;
 public class Category4Suite {
 
   @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
+  public static final Orchestrator ORCHESTRATOR = newOrchestratorBuilder()
     .addPlugin(xooPlugin())
 
     // Used in BaseIdentityProviderTest
@@ -109,9 +110,6 @@ public class Category4Suite {
 
     // Used by LogsTest
     .setServerProperty("sonar.web.accessLogs.pattern", LogsTest.ACCESS_LOGS_PATTERN)
-
-    // reduce memory for Elasticsearch to 128M
-    .setServerProperty("sonar.search.javaOpts", "-Xms128m -Xmx128m")
 
     .setServerProperty("sonar.web.javaAdditionalOpts", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8001")
 
