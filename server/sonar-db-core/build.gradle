@@ -5,7 +5,7 @@ dependencies {
   compile 'org.apache.commons:commons-csv'
   compile project(':sonar-scanner-protocol')
   compile project(':sonar-core')
-  compile project(':sonar-plugin-api')
+  compile project(path: ':sonar-plugin-api', configuration: 'shadow')
   compile 'org.mybatis:mybatis'
   compile 'commons-dbcp:commons-dbcp'
   compile 'commons-dbutils:commons-dbutils'
