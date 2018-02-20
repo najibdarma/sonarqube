@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Plugin API Dependencies'
+  }
+}
+
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {

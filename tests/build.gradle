@@ -72,6 +72,10 @@ dependencies {
   //includeInTestResources "org.jboss.byteman:byteman:${bytemanVersion}"
 }
 
+sonarqube {
+  skipProject = true
+}
+
 task integrationTest(type: Test) {
   description = 'Runs integration tests'
 

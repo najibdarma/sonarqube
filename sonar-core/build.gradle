@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Core'
+  }
+}
+
 configurations {
   includeInResources
 }

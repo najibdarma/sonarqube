@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Application'
+  }
+}
+
 configurations {
   ce
   jsw

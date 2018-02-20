@@ -1,3 +1,10 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Utilities for QA Tests'
+    property "sonar.coverage.exclusions", "src/main/java/**/*"
+  }
+}
+
 dependencies {
   compile project(':sonar-ws')
   compile 'com.codeborne:selenide:4.8'

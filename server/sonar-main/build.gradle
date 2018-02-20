@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Main Process'
+  }
+}
+
 dependencies {
   compile project(':server:sonar-process')
   compile 'org.slf4j:slf4j-api'

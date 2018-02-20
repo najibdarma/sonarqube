@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Compute Engine'
+  }
+}
+
 dependencies {
   compile project(':server:sonar-server')
   compile 'org.nanohttpd:nanohttpd'

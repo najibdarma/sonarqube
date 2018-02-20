@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Scanner Engine'
+  }
+}
+
 // TODO otherwise not considered as up-to-date - 'gradle -i' shows
 //   file sonar-scanner-engine/src/test/resources/mediumtest/xoo/multi-modules-sample/.sonar/batch-report/metadata.pb has changed
 //   file sonar-scanner-engine/src/test/resources/mediumtest/xoo/sample-generic-coverage/.sonar/batch-report/metadata.pb has changed

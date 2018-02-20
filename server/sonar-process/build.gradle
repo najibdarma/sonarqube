@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Process'
+  }
+}
+
 dependencies {
   compile 'com.hazelcast:hazelcast'
   compile 'org.slf4j:slf4j-api'

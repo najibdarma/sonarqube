@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Priviledged Plugin Bridge'
+  }
+}
+
 dependencies {
   compile project(path: ':sonar-plugin-api', configuration: 'shadow')
   compile project(':sonar-core')

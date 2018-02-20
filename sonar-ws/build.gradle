@@ -1,3 +1,10 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Web Service'
+    property 'sonar.exclusions', 'src/main/java/org/sonarqube/ws/client/*/*.java'
+  }
+}
+
 configurations {
   testCompile.extendsFrom(compileOnly)
 }

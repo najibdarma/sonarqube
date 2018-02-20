@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: DB testing'
+  }
+}
+
 dependencies {
   compile project(':sonar-testing-harness')
   compile project(':server:sonar-db-core').sourceSets.test.output

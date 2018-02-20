@@ -1,3 +1,9 @@
+sonarqube {
+  properties {
+    property 'sonar.projectName', 'SonarQube :: Duplications'
+  }
+}
+
 dependencies {
   compile 'org.codehaus.sonar:sonar-channel'
 

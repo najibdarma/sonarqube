@@ -1,3 +1,7 @@
+sonarqube {
+  skipProject = true
+}
+
 dependencies {
   compile 'com.google.guava:guava'
   compile 'commons-io:commons-io'

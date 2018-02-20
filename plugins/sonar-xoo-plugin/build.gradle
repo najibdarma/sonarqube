@@ -1,3 +1,7 @@
+sonarqube {
+  skipProject = true
+}
+
 configurations {
   testCompile.extendsFrom(compileOnly)
 }
