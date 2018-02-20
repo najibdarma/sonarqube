@@ -135,6 +135,8 @@ task integrationTest(type: Test) {
         break
       case 'Upgrade':
         includeTestsMatching 'org.sonarqube.tests.upgrade.UpgradeSuite'
+      case 'ServerPerformance':
+        includeTestsMatching 'org.sonarqube.tests.performance.server.ServerPerformanceSuite'
     }
   }
 }
