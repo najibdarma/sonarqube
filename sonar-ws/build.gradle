@@ -18,6 +18,8 @@ dependencies {
   testCompile 'commons-lang:commons-lang'
 }
 
+artifactoryPublish.skip = false
+
 apply plugin: 'maven-publish'
 publishing {
   publications {

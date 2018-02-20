@@ -4,6 +4,8 @@ dependencies {
   compileOnly 'com.google.code.findbugs:jsr305'
 }
 
+artifactoryPublish.skip = false
+
 // Used by fake-billing-plugin
 apply plugin: 'maven-publish'
 publishing {

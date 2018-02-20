@@ -118,6 +118,8 @@ zip.doFirst {
 
 assemble.dependsOn zip
 
+artifactoryPublish.skip = false
+
 apply plugin: 'maven-publish'
 publishing {
   publications {

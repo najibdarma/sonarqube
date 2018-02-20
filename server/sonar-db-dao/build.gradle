@@ -21,6 +21,8 @@ test {
     systemProperty 'orchestrator.configUrl', System.getProperty('orchestrator.configUrl')
 }
 
+artifactoryPublish.skip = false
+
 // Used by fake-governance-plugin
 apply plugin: 'maven-publish'
 publishing {
