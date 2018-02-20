@@ -240,7 +240,7 @@ artifactory {
       properties = [
         'vcs.revision': (System.getenv('GIT_COMMIT') ?: System.getenv('TRAVIS_COMMIT')),
         'vcs.branch': (System.getenv('GIT_BRANCH') ?: System.getenv('TRAVIS_BRANCH')),
-        'build.name': 'sonarlint-intellij',
+        'build.name': 'sonarqube',
         'build.number': (System.getenv('BUILD_ID') ?: System.getenv('TRAVIS_BUILD_NUMBER'))
       ]
       publications('mavenJava')
