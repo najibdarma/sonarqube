@@ -12,7 +12,7 @@ case "$RUN_ACTIVITY" in
 
   run-db-integration-tests-*)
     DB_ENGINE=$(sed "s/run-db-integration-tests-//g" <<< $RUN_ACTIVITY | cut -d \- -f 1)
-    CATEGORY_GROUP=$(sed "s/run-db-integration-tests-//g" <<< $RUN_ACTIVITY | cut -d \- -f 2)
+    CATEGORY=$(sed "s/run-db-integration-tests-//g" <<< $RUN_ACTIVITY | cut -d \- -f 2)
 
       ./gradlew --no-daemon --console plain -i \
           :tests:integrationTest \
