@@ -17,4 +17,4 @@ shift 1
   :tests:integrationTest \
   -Dorchestrator.configUrl=$ORCHESTRATOR_CONFIG_URL \
   -Dcategory=Upgrade \
-  -Dcix="true"
+  $*

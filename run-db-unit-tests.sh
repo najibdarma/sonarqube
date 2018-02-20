@@ -14,4 +14,5 @@ mvn -B initialize \
   :server:sonar-db-core:test \
   :server:sonar-db-migration:test \
   :server:sonar-db-dao:test \
-  -Dorchestrator.configUrl=$ORCHESTRATOR_CONFIG_URL
+  -Dorchestrator.configUrl=$ORCHESTRATOR_CONFIG_URL \
+  $*

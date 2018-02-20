@@ -19,6 +19,5 @@ shift 2
 ./gradlew --no-daemon --console plain -i \
   :tests:integrationTest \
   -Dcategory="$CATEGORY" \
-  -Dorchestrator.configUrl=$ORCHESTRATOR_CONFIG_URL \
-  -Pwith-db-drivers \
-  -Dcix="true"
+  -Dorchestrator.configUrl=$ORCHESTRATOR_CONFIG_URL  \
+  $*
