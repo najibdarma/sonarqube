@@ -27,45 +27,11 @@ case "$RUN_ACTIVITY" in
       exit 0
 
     else
-      mvn clean package -B -e -V -f tests/plugins/pom.xml
-
-      case "$CATEGORY_GROUP" in
-        Category1)
-          CATEGORY="Category1|authorization|measure|qualityGate|source"
-          ;;
-
-        Category2)
-          CATEGORY="issue|test|qualityModel"
-          ;;
-
-        Category3)
-          CATEGORY="Category3|component|project"
-          ;;
-
-        Category4)
-          CATEGORY="Category4|duplication"
-          ;;
-
-        Category5)
-          CATEGORY="Category5"
-          ;;
-
-        Category6)
-          CATEGORY="Category6|organization"
-          ;;
-
-        *)
-          echo "unknown CATEGORY_GROUP: $CATEGORY_GROUP"
-          exit 1
-          ;;
-      esac
-
-      mvn verify \
-          -f tests/pom.xml \
+      ./gradlew --no-daemon --console plain -i \
+          :tests:integrationTest \
           -Dcategory="$CATEGORY" \
           -Dorchestrator.configUrl="http://infra.internal.sonarsource.com/jenkins/orch-$DB_ENGINE.properties" \
-          -Pwith-db-drivers \
-          -B -e -V
+          -Dcix="true"
     fi
     ;;
 
