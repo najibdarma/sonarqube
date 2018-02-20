@@ -23,22 +23,6 @@ function installJdk8 {
   export PATH=$JAVA_HOME/bin:$PATH
 }
 
-#
-# Maven 3.2.5 is installed by default on Travis. Maven 3.5 is preferred.
-#
-function installMaven {
-  echo "Setup Maven"
-  mkdir -p ~/maven
-  pushd ~/maven > /dev/null
-  if [ ! -d "apache-maven-3.5" ]; then
-    echo "Download Maven 3.5"
-    curl -sSL https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz | tar zx -C ~/maven
-  fi
-  popd > /dev/null
-  export M2_HOME=~/maven/apache-maven-3.5.0
-  export PATH=$M2_HOME/bin:$PATH
-}
-
 function installNode {
   set +u
   source ~/.nvm/nvm.sh && nvm install 8
@@ -133,42 +117,9 @@ case "$TARGET" in
 
 BUILD)
 
-  if [ -d tests/target ]; then
-    
-    if [ -f tests/target/surefire-reports/org.sonarqube.tests.lite.LiteSuite-output.txt ]; then
-      echo 'PRINT TESTS LOGS'
-      cat tests/target/surefire-reports/org.sonarqube.tests.lite.LiteSuite-output.txt
-    fi
-    if [ -f tests/target/1/sonarqube/logs/sonar.log ]; then
-      echo 'PRINT SQ SONAR LOGS'
-      cat tests/target/1/sonarqube/logs/sonar.log
-    fi
-    if [ -f tests/target/1/sonarqube/logs/web.log ]; then
-      echo 'PRINT SQ WEB LOGS'
-      cat tests/target/1/sonarqube/logs/web.log
-    fi
-    if [ -f tests/target/1/sonarqube/logs/es.log ]; then
-      echo 'PRINT SQ ES LOGS'
-      cat tests/target/1/sonarqube/logs/es.log
-    fi
-    if [ -f tests/target/1/sonarqube/logs/ce.log ]; then
-      echo 'PRINT SQ CE LOGS'
-      cat tests/target/1/sonarqube/logs/ce.log
-    fi
-    if [ -f tests/target/1/sonarqube/logs/access.log ]; then
-      echo 'PRINT SQ ACCESS LOGS'
-      cat tests/target/1/sonarqube/logs/access.log
-    fi
-  fi
-
   installJdk8
-  installMaven
   installNode
   fixBuildVersion
-
-  # Minimal Maven settings
-  export MAVEN_OPTS="-Xmx1G -Xms128m"
-  MAVEN_ARGS="-T 1C -Dmaven.test.redirectTestOutputToFile=false -Dsurefire.useFile=false -B -e -V -DbuildVersion=$BUILD_VERSION -Dtests.es.logger.level=WARN -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
   # Minimal Gradle settings
   export GRADLE_OPTS="-Xmx512m"
@@ -183,68 +134,54 @@ BUILD)
 
   if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo 'Build and analyze master'
-#    mvn org.jacoco:jacoco-maven-plugin:prepare-agent deploy \
-#          $MAVEN_ARGS \
-#          -Pdeploy-sonarsource,release
-#        
-#    mvn sonar:sonar \
-#          -Dsonar.host.url=$SONAR_HOST_URL \
-#          -Dsonar.login=$SONAR_TOKEN \
-#          -Dsonar.projectVersion=$INITIAL_VERSION \
-#          -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
-#          -Dsonar.analysis.pipeline=$BUILD_NUMBER \
-#          -Dsonar.analysis.sha1=$GIT_COMMIT \
-#          -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    ./gradlew --no-daemon --console plain \
+        sonarqube artifactoryPublish -Prelease=true -DbuildNumber=$TRAVIS_BUILD_NUMBER \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.projectVersion=$INITIAL_VERSION \
+        -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
+        -Dsonar.analysis.pipeline=$BUILD_NUMBER \
+        -Dsonar.analysis.sha1=$GIT_COMMIT \
+        -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
 
   elif [[ "$TRAVIS_BRANCH" == "branch-"* ]] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo 'Build release branch'
-
-#    mvn org.jacoco:jacoco-maven-plugin:prepare-agent deploy \
-#        $MAVEN_ARGS \
-#        -Pdeploy-sonarsource,release
-#
-#    mvn sonar:sonar \
-#        -Dsonar.host.url=$SONAR_HOST_URL \
-#        -Dsonar.login=$SONAR_TOKEN \
-#        -Dsonar.branch.name=$TRAVIS_BRANCH \
-#        -Dsonar.projectVersion=$INITIAL_VERSION \
-#        -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
-#        -Dsonar.analysis.pipeline=$BUILD_NUMBER \
-#        -Dsonar.analysis.sha1=$GIT_COMMIT \
-#        -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    ./gradlew --no-daemon --console plain \
+        sonarqube artifactoryPublish -Prelease=true -DbuildNumber=$TRAVIS_BUILD_NUMBER \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.branch.name=$TRAVIS_BRANCH \
+        -Dsonar.projectVersion=$INITIAL_VERSION \
+        -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
+        -Dsonar.analysis.pipeline=$BUILD_NUMBER \
+        -Dsonar.analysis.sha1=$GIT_COMMIT \
+        -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
   
   elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
     echo 'Build and analyze internal pull request'
-
-#    mvn org.jacoco:jacoco-maven-plugin:prepare-agent deploy \
-#        $MAVEN_ARGS \
-#        -Dsource.skip=true \
-#        -Pdeploy-sonarsource
-#
-#    # TODO remove the sonar.pullrequest.github.* settings after sonar-core-plugins 7.1.0.330 is deployed on Next
-#    mvn sonar:sonar \
-#        -Dsonar.host.url=$SONAR_HOST_URL \
-#        -Dsonar.login=$SONAR_TOKEN \
-#        -Dsonar.branch.name=$TRAVIS_PULL_REQUEST_BRANCH \
-#        -Dsonar.branch.target=$TRAVIS_BRANCH \
-#        -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
-#        -Dsonar.analysis.pipeline=$BUILD_NUMBER \
-#        -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
-#        -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
-#        -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
-#        -Dsonar.pullrequest.id=$TRAVIS_PULL_REQUEST \
-#        -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
-#        -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG
+    ./gradlew --no-daemon --console plain \
+        sonarqube artifactoryPublish -DbuildNumber=$TRAVIS_BUILD_NUMBER \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.branch.name=$TRAVIS_PULL_REQUEST_BRANCH \
+        -Dsonar.branch.target=$TRAVIS_BRANCH \
+        -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
+        -Dsonar.analysis.pipeline=$BUILD_NUMBER \
+        -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
+        -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
+        -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
+        -Dsonar.pullrequest.id=$TRAVIS_PULL_REQUEST \
+        -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
+        -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG
 
   else
     echo 'Build feature branch or external pull request'
-
-#    mvn deploy $MAVEN_ARGS -Dsource.skip=true -Pdeploy-sonarsource
-     
-    ./gradlew publishToMavenLocal artifactoryPublish -Prelease=true -DbuildNumber=$TRAVIS_BUILD_NUMBER --no-daemon
+    ./gradlew  --no-daemon --console plain \
+        artifactoryPublish -DbuildNumber=$TRAVIS_BUILD_NUMBER
   fi
 
-  ./gradlew :tests:integrationTest -Dcategory=Lite -DbuildNumber=$TRAVIS_BUILD_NUMBER --no-daemon -i --console plain
+  ./gradlew --no-daemon --console plain \
+      :tests:integrationTest -Dcategory=Lite -DbuildNumber=$TRAVIS_BUILD_NUMBER
   ;;
 
 WEB_TESTS)
