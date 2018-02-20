@@ -41,4 +41,13 @@ processResources {
   }
 }
 
-artifactoryPublish.skip = true
+// Used by sonar-db-core to run DB Unit Tests
+artifactoryPublish.skip = false
+apply plugin: 'maven-publish'
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+}
