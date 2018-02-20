@@ -29,10 +29,14 @@ allprojects {
     version = version.replace('-SNAPSHOT', ".0.$buildNumber")
   }
 
+  def artifactsRepo = 'sonarsource'
+  if (System.getProperty('cix')=='true') {
+    artifactsRepo = 'sonarsource-qa'
+  }
   repositories {
     mavenLocal()
     maven {
-      url 'https://repox.sonarsource.com/sonarsource'
+      url "https://repox.sonarsource.com/${artifactsRepo}"
     }
   }
 }
