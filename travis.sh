@@ -241,10 +241,10 @@ BUILD)
 
 #    mvn deploy $MAVEN_ARGS -Dsource.skip=true -Pdeploy-sonarsource
      
-    ./gradlew -Prelease=true build publishToMavenLocal artifactoryPublish --no-daemon
+    ./gradlew publishToMavenLocal artifactoryPublish -Prelease=true -DbuildNumber=$TRAVIS_BUILD_NUMBER --no-daemon
   fi
 
-  ./gradlew :tests:integrationTest -Dcategory=Lite --no-daemon -i --console plain
+  ./gradlew :tests:integrationTest -Dcategory=Lite -DbuildNumber=$TRAVIS_BUILD_NUMBER --no-daemon -i --console plain
   ;;
 
 WEB_TESTS)
