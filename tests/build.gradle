@@ -130,6 +130,9 @@ task integrationTest(type: Test) {
         includeTestsMatching 'org.sonarqube.tests.Category6Suite'
         includeTestsMatching 'org.sonarqube.tests.organization.*Suite'
         break
+      case 'Plugins':
+        includeTestsMatching 'org.sonarqube.tests.plugins.PluginsSuite'
+        break
     }
   }
 }
