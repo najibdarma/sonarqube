@@ -133,6 +133,8 @@ task integrationTest(type: Test) {
       case 'Plugins':
         includeTestsMatching 'org.sonarqube.tests.plugins.PluginsSuite'
         break
+      case 'Upgrade':
+        includeTestsMatching 'org.sonarqube.tests.upgrade.UpgradeSuite'
     }
   }
 }
