@@ -68,6 +68,9 @@ dependencies {
   integrationTestCompile 'com.microsoft.sqlserver:mssql-jdbc'
   integrationTestCompile 'mysql:mysql-connector-java'
   integrationTestCompile 'org.postgresql:postgresql'
+  // TODO Improve as Oracle JDBC is not available in Maven Central
+  // As by default we are using Repox (To improve), I added it for now
+  integrationTestCompile 'com.oracle.jdbc:ojdbc8'
 
   //includeInTestResources "org.jboss.byteman:byteman:${bytemanVersion}"
 }
