@@ -30,13 +30,21 @@ allprojects {
   }
 
   def artifactsRepo = 'sonarsource'
-  if (System.getProperty('cix')=='true') {
+  def artifactsUserName = 'ARTIFACTORY_PRIVATE_USERNAME'
+  def artifactsPassword = 'ARTIFACTORY_PRIVATE_PASSWORD'
+  if (System.getProperty('cix') == 'true') {
     artifactsRepo = 'sonarsource-qa'
+    artifactsUserName = 'ARTIFACTORY_QA_USERNAME'
+    artifactsPassword = 'ARTIFACTORY_QA_PASSWORD'
   }
   repositories {
     mavenLocal()
     maven {
       url "https://repox.sonarsource.com/${artifactsRepo}"
+      credentials {
+        username System.env."${artifactsUserName}"
+        password System.env."${artifactsPassword}"
+      }
     }
   }
 }

@@ -1,17 +1,3 @@
-// Enable loading of credentials from Maven settings.xml for QA
-plugins {
-  id "net.linguica.maven-settings" version "0.5"
-}
-
-// Used to resolve dependencies on cix
-repositories.maven {
-  name 'sonarsource'
-  url "https://repox.sonarsource.com/sonarsource-qa"
-  authentication {
-    basic(BasicAuthentication)
-  }
-}
-
 ext {
   jettyVersion = '9.3.11.v20160721'
   bytemanVersion = '3.0.10'
@@ -91,15 +77,12 @@ sonarqube {
 }
 
 task integrationTest(type: Test) {
-  description = 'Runs integration tests'
-
-  // Enable the resolution on SQ dependencies when running on cix (nedd credential to retrieve the artifact from repox)
-  doFirst {
-    if (System.getProperty('cix')=='true') {
-      systemProperty 'sonar.zipPath', configurations.sqZip.resolve().first()
-    } else {
-      systemProperty 'sonar.zipPath', project(':sonar-application').zip.archivePath
-    }
+  description = 'Runs integration tests'  
+  
+  if (System.getProperty('cix')=='true') {
+    systemProperty 'sonar.zipPath', configurations.sqZip.resolve().first()
+  } else {
+    systemProperty 'sonar.zipPath', project(':sonar-application').distsDir
   }
 
   for (plugin in pluginsForITs) {
@@ -112,8 +95,6 @@ task integrationTest(type: Test) {
   if (System.getProperty('orchestrator.configUrl')) {
     systemProperty 'orchestrator.configUrl', System.getProperty('orchestrator.configUrl')
   }
-
-  
 
   def category = System.getProperty('category')
   filter {
