@@ -1,7 +1,7 @@
 /*
  * SonarQube
- * Copyright (C) 2009-2017 SonarSource SA
- * mailto:info AT sonarsource DOT com
+ * Copyright (C) 2009-2016 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,22 +17,10 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+import * as React from 'react';
+import { shallow } from 'enzyme';
+import TaskSubmitter from '../TaskSubmitter';
 
-export interface Task {
-  branch?: string;
-  branchType?: string;
-  componentKey?: string;
-  componentName?: string;
-  componentQualifier?: string;
-  errorMessage?: string;
-  executedAt?: string;
-  executionTimeMs?: number;
-  hasScannerContext?: boolean;
-  id: string;
-  organization?: string;
-  startedAt?: string;
-  status: string;
-  submittedAt: string;
-  submitterLogin?: string;
-  type: string;
-}
+it('renders', () => {
+  expect(shallow(<TaskSubmitter submitter="admin" />)).toMatchSnapshot();
+});
