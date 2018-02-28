@@ -17,22 +17,16 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+import * as React from 'react';
 
-export interface Task {
-  branch?: string;
-  branchType?: string;
-  componentKey?: string;
-  componentName?: string;
-  componentQualifier?: string;
-  errorMessage?: string;
-  executedAt?: string;
-  executionTimeMs?: number;
-  hasScannerContext?: boolean;
-  id: string;
-  organization?: string;
-  startedAt?: string;
-  status: string;
-  submittedAt: string;
-  submitterLogin?: string;
-  type: string;
+interface Props {
+  submitter?: string;
+}
+
+export default function TaskSubmitter({ submitter }: Props) {
+  return (
+    <td className="thin nowrap">
+      <div className="note">{submitter}</div>
+    </td>
+  );
 }
